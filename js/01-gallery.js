@@ -40,7 +40,7 @@ function addModalImage(openedImage) {
     `<img src="${openedImage}" width="800" height="600">`,
     {
       onShow: refs.galleryEl.addEventListener("keydown", escListener),
-      onclose: () => {
+      onClose: () => {
         refs.galleryEl.removeEventListener("keydown", escListener);
       },
     }

@@ -29,7 +29,7 @@ createFinalGalleryByReduce(galleryItems);
 function createFinalGalleryByReduce(arrayImages) {
   const finalGallery = arrayImages.reduce(
     (accumulator, item) =>
-      accumulator +
+      accumulator +=
       `<li class="gallery__item">
           <a class="gallery__link" href="${item.original}">
             <img class="gallery__image" src="${item.preview}" alt="${item.description}"/>
