@@ -5,50 +5,47 @@ const refs = {
   galleryEl: document.querySelector(".gallery"),
 };
 
-let finalGallery = "";
-
 createFinalGallery(galleryItems);
 
 refs.galleryEl.addEventListener("click", openImage);
 
 function createFinalGallery(arrayImages) {
-  createGalleryMatCap(arrayImages);
-  refs.galleryEl.insertAdjacentHTML("beforeend", finalGallery);
-}
-
-function createGalleryMatCap(arrayImages) {
-  const galleryMatCap = [];
-  arrayImages.map((image) => {
-    const imageEl = `
+  const galleryInString = arrayImages
+    .map((image) => {
+      const imageEl = `
         <li class="gallery__item">
             <a class="gallery__link" href="${image.original}">
                 <img class="gallery__image" src="${image.preview}" data-source="${image.original}" alt="${image.description}"/>
             </a>
          </li>`;
-    galleryMatCap.push(imageEl);
-  });
-  finalGallery = galleryMatCap.join("");
+      return imageEl;
+    })
+    .join("");
+  refs.galleryEl.insertAdjacentHTML("beforeend", galleryInString);
 }
 
 function openImage(event) {
   event.preventDefault();
 
-  if (!event.target.classList.contains("gallery__image")) {
+  if (event.target.nodeName !== "IMG") {
     return;
   }
   let openedImage = event.target.dataset.source;
 
   addModalImage(openedImage);
-
 }
 
 function addModalImage(openedImage) {
   const instance = basicLightbox.create(
-    `<img src="${openedImage}" width="800" height="600">`
+    `<img src="${openedImage}" width="800" height="600">`,
+    {
+      onShow: refs.galleryEl.addEventListener("keydown", escListener),
+      onclose: () => {
+        refs.galleryEl.removeEventListener("keydown", escListener);
+      },
+    }
   );
-    instance.show();
-    
-  refs.galleryEl.addEventListener("keydown", escListener);
+  instance.show();
 
   function escListener(event) {
     if (event.code === "Escape") {

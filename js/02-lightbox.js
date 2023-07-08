@@ -7,27 +7,38 @@ const refs = {
   galleryEl: document.querySelector(".gallery"),
 };
 
-let finalGallery = "";
+// createFinalGallery(galleryItems);
 
-createFinalGallery(galleryItems);
+createFinalGalleryByReduce(galleryItems);
 
-function createFinalGallery(arrayImages) {
-  createGalleryMatCap(arrayImages);
+// function createFinalGallery(arrayImages) {
+//   const finalGallery = arrayImages
+//     .map((image) => {
+//       const imageEl = `
+//         <li class="gallery__item">
+//             <a class="gallery__link" href="${image.original}">
+//                 <img class="gallery__image" src="${image.preview}" alt="${image.description}"/>
+//             </a>
+//          </li>`;
+//       return imageEl;
+//     })
+//     .join("");
+//   refs.galleryEl.insertAdjacentHTML("beforeend", finalGallery);
+// }
+
+function createFinalGalleryByReduce(arrayImages) {
+  const finalGallery = arrayImages.reduce(
+    (accumulator, item) =>
+      accumulator +
+      `<li class="gallery__item">
+          <a class="gallery__link" href="${item.original}">
+            <img class="gallery__image" src="${item.preview}" alt="${item.description}"/>
+          </a>
+        </li>`,
+    ""
+  );
+
   refs.galleryEl.insertAdjacentHTML("beforeend", finalGallery);
-}
-
-function createGalleryMatCap(arrayImages) {
-  const galleryMatCap = [];
-  arrayImages.map((image) => {
-    const imageEl = `
-        <li class="gallery__item">
-            <a class="gallery__link" href="${image.original}">
-                <img class="gallery__image" src="${image.preview}" alt="${image.description}"/>
-            </a>
-         </li>`;
-    galleryMatCap.push(imageEl);
-  });
-  finalGallery = galleryMatCap.join("");
 }
 
 const lightbox = new SimpleLightbox(".gallery a", {
